@@ -1,0 +1,14 @@
+<launch>
+  <arg name="world_file"  default="$(find irobot_simulator)/worlds/maze_world.world"/>
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find irobot_simulator)/urdf/create_2.urdf.xacro'" />
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="use_sim_time" value="true"/>
+    <arg name="debug" value="false"/>
+    <arg name="gui" value="true" />
+    <arg name="world_name" value="$(arg world_file)"/>
+  </include>
+
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" 
+                          args="-param robot_description -urdf -model create_2" />
+</launch>
