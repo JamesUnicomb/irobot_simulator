@@ -11,4 +11,6 @@
 
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" 
                           args="-param robot_description -urdf -model create_2" />
+
+  <node name="bumper_publisher" pkg="irobot_simulator" type="bumper_publisher.py" />
 </launch>

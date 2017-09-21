@@ -40,19 +40,21 @@ class iRobotBumper:
         bumper_msg = Bumper()
         bumper_msg.header = ir_msg.header
 
-        bumper_msg.is_left_pressed
-        bumper_msg.is_right_pressed
-        bumper_msg.is_light_left
-        bumper_msg.is_light_front_left
-        bumper_msg.is_light_center_left
-        bumper_msg.is_light_center_right
-        bumper_msg.is_light_front_right
-        bumper_msg.is_light_right
-        bumper_msg.light_signal_left
-        bumper_msg.light_signal_front_left
-        bumper_msg.light_signal_center_left
-        bumper_msg.light_signal_center_right
-        bumper_msg.light_signal_front_right
-        bumper_msg.light_signal_right
+        bumper_msg.is_left_pressed           = self.left
+        bumper_msg.is_right_pressed          = self.right
+        bumper_msg.is_light_left             = ir_bool[0]
+        bumper_msg.is_light_front_left       = ir_bool[1]
+        bumper_msg.is_light_center_left      = ir_bool[2]
+        bumper_msg.is_light_center_right     = ir_bool[3]
+        bumper_msg.is_light_front_right      = ir_bool[4]
+        bumper_msg.is_light_right            = ir_bool[5]
+        bumper_msg.light_signal_left         = ir_dist[0]
+        bumper_msg.light_signal_front_left   = ir_dist[1]
+        bumper_msg.light_signal_center_left  = ir_dist[2]
+        bumper_msg.light_signal_center_right = ir_dist[3]
+        bumper_msg.light_signal_front_right  = ir_dist[4]
+        bumper_msg.light_signal_right        = ir_dist[5]
+
+        self.bumper_pub.publish(bumper_msg)
 
         
