@@ -7,11 +7,13 @@ from theano.tensor.extra_ops import to_one_hot
 
 import lasagne
 from lasagne.updates import adam
-from lasagne.layers import DenseLayer, InputLayer, get_output
+from lasagne.objectives import squared_error
+from lasagne.layers import DenseLayer, InputLayer, get_output, get_all_params
 from lasagne.nonlinearities import rectify, softmax, tanh
 
-n_input  = 6
-n_output = 3
+n_input       = 6
+n_output      = 3
+learning_rate = 0.01
 
 def Q_network(state):
     input_state = InputLayer(input_var = state,
@@ -34,7 +36,7 @@ def Q_network(state):
 
 X_state  = T.fmatrix()
 X_action = T.bvector()
-X_reward = T.fmatrix()
+X_reward = T.fvector()
 
 X_action_hot = to_one_hot(X_action, n_output)
 
@@ -69,4 +71,21 @@ Q_action  = theano.function(inputs               = [X_state, X_action],
 
 #print Q_action([[100,220,50,0,100,200],[100,220,50,0,100,200],[100,220,50,0,100,200]], [0,1,2])
 
+loss = squared_error(X_reward, Q_action_)
+loss = loss.mean()
 
+params = get_all_params(Q_network_values)
+
+updates = adam(loss,
+               params,
+               learning_rate = learning_rate)
+
+update_network = theano.function(inputs               = [X_state, X_action, X_reward],
+                                 outputs              = loss,
+                                 updates              = updates,
+                                 allow_input_downcast = True)
+
+
+for j in range(200):
+    update_network([[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6]], [0,1,2], [16.0, 32.0, -0.8])
+    print Q_values([[1,2,3,4,5,6]])
