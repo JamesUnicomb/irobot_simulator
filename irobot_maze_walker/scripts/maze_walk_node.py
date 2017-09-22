@@ -45,30 +45,51 @@ maze_walker = iRobotMazeWalker()
 class learnerHandler:
     def __init__(self):
         self.episode_number = 0
-        self.rewards        = []
-        self.observations   = []
+        self.reset          = True
+        self.next_state     = []
+        self.current_state  = []
         self.actions        = []
-
+        self.rewards        = []
+ 
         rospy.Subscriber('/maze_walk', MazeWalk, self.walker_cb)
 
     def walker_cb(self,
                   maze_walk_msg):
-        action = np.random.randint(0,3)
+        self.next_state = maze_walk_msg.observations
+        self.reward     = maze_walk_msg.reward
 
-        self.rewards.append(maze_walk_msg.reward)
-        self.observations.append(maze_walk_msg.observations)
-        self.actions.append(action)
+        self.replay_memory.append((self.state, self.action, self.reward, self.next_state))
 
-        if maze_walk_msg.done:
-            self.rewards        = []
-            self.observations   = []
-            self.actions        = []
+        self.state = self.next_state
 
-            self.episode_number += 1
+        self.action = greedy_eps(state)
 
-        print 'ep: %d; len: %d' % (self.episode_number, len(self.rewards))
 
-        maze_walker.set_discrete_action(action)
+
+
+
+
+
+        if self.reset:
+            self.state           = maze_walk_msg.observations
+            self.reset           = False
+        else:
+            if maze_walk_msg.done:
+                self.next_state      = maze_walk_msg.observations
+                self.rewards         = maze_walk_msg.reward
+                self.reset           = True
+                self.episode_number += 1
+
+            self.action = np.random.randint(0,3) #TODO Function(self.state)
+
+            replay_memory.append((self.state, self.action, 
+            self.state = self.next_state
+
+
+
+            print 'ep: %d; len: %d' % (self.episode_number, len(self.rewards))
+
+            maze_walker.set_discrete_action(action)
 
 lh = learnerHandler()
 
