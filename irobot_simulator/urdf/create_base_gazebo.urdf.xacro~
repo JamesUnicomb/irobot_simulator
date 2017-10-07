@@ -89,7 +89,7 @@
           <noise>
             <type>gaussian</type>
             <mean>0.0</mean>
-            <stddev>0.0</stddev>
+            <stddev>0.01</stddev>
           </noise>
         </ray>
         <plugin name="ir_array_node" filename="libgazebo_ros_laser.so">

@@ -34,7 +34,7 @@ class iRobotBumper:
 
         d = np.nan_to_num(np.array(ir_msg.ranges)) - 0.165
 
-        ir_dist = (2e4 * np.sqrt(d) * np.exp(-20.0 * d)).astype(np.int16) + np.random.randint(1,10,6)
+        ir_dist = (2e4 * np.sqrt(d) * np.exp(-20.0 * d)).astype(np.int16) + np.random.randint(1,5,6)
         ir_bool = (ir_dist > 150)
 
         bumper_msg = Bumper()
